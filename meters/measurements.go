@@ -20,7 +20,7 @@ func (r MeasurementResult) String() string {
 // Measurement is the type of measurement, i.e. the physical property being measued in common notation
 type Measurement int
 
-//go:generate stringer -type=Measurement
+//go:generate enumer -type=Measurement
 const (
 	_ Measurement = iota
 
@@ -138,6 +138,8 @@ const (
 	// Battery
 	ChargeState
 	BatteryVoltage
+
+	PhaseAngle
 )
 
 var iec = map[Measurement][]string{
@@ -232,6 +234,7 @@ var iec = map[Measurement][]string{
 	DCEnergyS3:       {"String 3 Generation", "kWh"},
 	ChargeState:      {"Charge State", "%"},
 	BatteryVoltage:   {"Battery Voltage", "V"},
+	PhaseAngle:       {"Phase Angle", "°"},
 }
 
 // MarshalText implements encoding.TextMarshaler

@@ -4,8 +4,11 @@ import (
 	sunspec "github.com/andig/gosunspec"
 	"github.com/andig/gosunspec/models/model101"
 	"github.com/andig/gosunspec/models/model103"
+	"github.com/andig/gosunspec/models/model111"
+	"github.com/andig/gosunspec/models/model113"
 	"github.com/andig/gosunspec/models/model124"
 	"github.com/andig/gosunspec/models/model160"
+	"github.com/andig/gosunspec/models/model201"
 	"github.com/andig/gosunspec/models/model203"
 
 	"github.com/volkszaehler/mbmd/meters"
@@ -31,6 +34,24 @@ var modelMap = map[sunspec.ModelId]map[int]map[string]meters.Measurement{
 			model101.TmpCab: meters.HeatSinkTemp,
 		},
 	},
+	// single phase inverter - float
+	model111.ModelID: {
+		0: {
+			model111.A:      meters.Current,
+			model111.AphA:   meters.CurrentL1,
+			model111.PhVphA: meters.VoltageL1,
+			model111.Hz:     meters.Frequency,
+			model111.W:      meters.Power,
+			model111.VA:     meters.ApparentPower,
+			model111.VAr:    meters.ReactivePower,
+			model111.PF:     meters.Cosphi,
+			model111.WH:     meters.Export,
+			model111.DCA:    meters.DCCurrent,
+			model111.DCV:    meters.DCVoltage,
+			model111.DCW:    meters.DCPower,
+			model111.TmpCab: meters.HeatSinkTemp,
+		},
+	},
 	// three phase inverter
 	model103.ModelID: {
 		0: {
@@ -53,6 +74,28 @@ var modelMap = map[sunspec.ModelId]map[int]map[string]meters.Measurement{
 			model103.TmpCab: meters.HeatSinkTemp,
 		},
 	},
+	// three phase inverter - float
+	model113.ModelID: {
+		0: {
+			model113.A:      meters.Current,
+			model113.AphA:   meters.CurrentL1,
+			model113.AphB:   meters.CurrentL2,
+			model113.AphC:   meters.CurrentL3,
+			model113.PhVphA: meters.VoltageL1,
+			model113.PhVphB: meters.VoltageL2,
+			model113.PhVphC: meters.VoltageL3,
+			model113.Hz:     meters.Frequency,
+			model113.W:      meters.Power,
+			model113.VA:     meters.ApparentPower,
+			model113.VAr:    meters.ReactivePower,
+			model113.PF:     meters.Cosphi,
+			model113.WH:     meters.Export,
+			model113.DCA:    meters.DCCurrent,
+			model113.DCV:    meters.DCVoltage,
+			model113.DCW:    meters.DCPower,
+			model113.TmpCab: meters.HeatSinkTemp,
+		},
+	},
 	model160.ModelID: {
 		1: {
 			model160.DCA:  meters.DCCurrentS1,
@@ -71,6 +114,20 @@ var modelMap = map[sunspec.ModelId]map[int]map[string]meters.Measurement{
 			model160.DCV:  meters.DCVoltageS3,
 			model160.DCW:  meters.DCPowerS3,
 			model160.DCWH: meters.DCEnergyS3,
+		},
+	},
+	// single phase (AN or AB) meter
+	model201.ModelID: {
+		0: {
+			model201.A:        meters.Current,
+			model201.Hz:       meters.Frequency,
+			model201.PF:       meters.Cosphi,
+			model201.PhV:      meters.Voltage,
+			model201.TotWhExp: meters.Export,
+			model201.TotWhImp: meters.Import,
+			model201.VA:       meters.ApparentPower,
+			model201.VAR:      meters.ReactivePower,
+			model201.W:        meters.Power,
 		},
 	},
 	// wye-connect three phase (abcn) meter
@@ -98,13 +155,13 @@ var modelMap = map[sunspec.ModelId]map[int]map[string]meters.Measurement{
 			model203.TotWhImpPhB: meters.ImportL2,
 			model203.TotWhImpPhC: meters.ImportL3,
 			model203.VA:          meters.ApparentPower,
+			model203.VAphA:       meters.ApparentPowerL1,
+			model203.VAphB:       meters.ApparentPowerL2,
+			model203.VAphC:       meters.ApparentPowerL3,
 			model203.VAR:         meters.ReactivePower,
 			model203.VARphA:      meters.ReactivePowerL1,
 			model203.VARphB:      meters.ReactivePowerL2,
 			model203.VARphC:      meters.ReactivePowerL3,
-			model203.VAphA:       meters.CurrentL1,
-			model203.VAphB:       meters.CurrentL2,
-			model203.VAphC:       meters.CurrentL3,
 			model203.W:           meters.Power,
 			model203.WphA:        meters.PowerL1,
 			model203.WphB:        meters.PowerL2,

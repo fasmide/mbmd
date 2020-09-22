@@ -21,7 +21,7 @@ Modbus communication is possible over RS485 connections as well as TCP sockets.
   * [Websocket API](#websocket-api)
   * [MQTT API](#mqtt-api)
 * [Supported Devices](#supported-devices)
-* [Changelog](#changelog)
+* [Releases](#releases)
 
 
 ## Requirements
@@ -86,7 +86,7 @@ web page that updates itself with the latest values:
 
 Alternatively run `mbmd` using the Docker image:
 
-	docker run -p 8080:8080 --device=/dev/ttyUSB0 volkszaehler/mbmd -a /dev/ttyUSB0 -u 0.0.0.0:8080 -d sdm:1
+	docker run -p 8080:8080 --device=/dev/ttyUSB0 volkszaehler/mbmd run -a /dev/ttyUSB0 -u 0.0.0.0:8080 -d sdm:1
 
 To mount the config file into the docker container use `-v $(pwd)/mbmd.yaml:/etc/mbmd.yaml`.
 
@@ -170,7 +170,7 @@ Both device APIs can also be called without the device id to return data for all
 
 The `/api/status` endpoint provides the following information:
 
-    $ curl http://localhost:8080/status
+    $ curl http://localhost:8080/api/status
     {
       "StartTime": "2017-01-25T16:35:50.839829945+01:00",
       "UpTime": 65587.177092186,
@@ -221,6 +221,9 @@ By default, readings are published at `/mbmd/<unique id>/<reading>`. Rate limiti
 
 ![auto-discovery of thinks in OpenHAB](img/openhab.png)
 
+## InfluxDB support
+
+There is also the option to directly insert the data into an influxdb database by using the command-line options available. InfluxDB 1.8 and 2.0 are currently supported. to enable this, add the `--influx-database` and the `--influx-url` commandline parameter. More advanced configuration is available, to learn more checkout the [mbmd_run.md](docs/mbmd_run.md) documentation
 
 # Supported Devices
 
@@ -246,6 +249,9 @@ manuals for definitive guidance):
 | ABB A/B-Series | 3 | + | + | + | + | + | + | + | + |
 | BE MPM3MP | 3 | + | + | + | + | + | + | - | - |
 | KOSTAL Smart Energy Meter | 3 | + | + | + | + | + | + | + | - |
+| ORNO WE-514/515 | 1 | + | + | + | + | + | - | - | - |
+| ORNO WE-516/517 | 3 | + | + | + | + | + | + | + | - |
+| iEM3000 Series | 3 | + | + | + | + | + | + | (+) | + |
 
 - **SDM120**: Cheap and small (1TE), but communication parameters can only be set over MODBUS, which is currently not supported by this project.
 You can use e.g. [SDM120C](https://github.com/gianfrdp/SDM120C) to change parameters.
@@ -272,6 +278,13 @@ this as the meter ID.
 It has two tariffs, both import and export depending on meter version and compact (4TE). It's often used with Viessmann heat pumps.
 - **BE MPM3PM**: Compact (4TE) three phase meter.
 - **KOSTAL Smart Energy Meter**: Slave device for Kostal grid inverters. Known [bug](https://github.com/volkszaehler/mbmd/pull/61#issuecomment-570081618) in inverter firmware with Total Export Energy.
+- **ORNO WE-514/515**: Low cost single phase meter
+By default, the meter communicates using 9600 8E1. The meter ID is 1. Meter ID, bus speed and other parameters are configurable via  [Software(Windows only)](https://www.partner.orno.pl/grafiki2/PC%20softwre170621.rar)
+WE-515 has a lithium battery and multi-tariff support, WE-514 does not support tariff zones.
+- **ORNO WE-516/517**: Low cost three phase meter.
+By default, the meter communicates using 9600 8E1. The meter ID is 1. Meter ID, bus speed and other parameters are configurable via  [Software(Windows only)](https://www.partner.orno.pl/grafiki2/PC%20softwre170621.rar)
+WE-517 has a lithium battery and multi-tariff support, WE-516 does not support tariff zones.
+- **Schneider Electric iEM3000 Series**: Professional meter with loads of configurable max/average measurements with timestamp functionality.
 
 ## Modbus TCP Grid Inverters
 
@@ -280,19 +293,17 @@ are supported, too. SunSpec defines a default register layout for accessing
 the devices.
 
 Supported inverters include popular devices from SolarEdge (SE3000, SE9000)
-and SMA (Sunny Boy and Sunny Tripower).
+and SMA (Sunny Boy and Sunny TriPower).
 
-In case of TCP connection, the adapter paramter becomes the hostname and port:
+In case of TCP connection, the adapter parameter becomes the hostname and port:
 
 	./mbmd run -a 192.168.0.44:502 -d SMA:23
 
+SunSpec devices can host multiple subdevices, e.g. to expose a meter attached to an inverter. To access a subdevice, append its id to the slave id:
 
-# Changelog
+	./mbmd run -a 192.168.0.44:502 -d FRONIUS:1.0 -d FRONIUS:1.1
 
-## 0.8
 
-Initial release at https://github.com/volkszaehler/mbmd. Various enhancements and additional meters.
+# Releases
 
-## 0.7
-
-Before versoin 0.8, `mbmd` was known as `sdm630` and developed by Mathias Dalheimer. Older releases of `mbmd`/`sdm630` can be found at https://github.com/gonium/gosdm630
+Download the lastest release from [github.com/volkszaehler/mbmd/releases](https://github.com/volkszaehler/mbmd/releases).

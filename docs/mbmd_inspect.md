@@ -20,12 +20,18 @@ mbmd inspect [flags]
                           Valid types are:
                             RTU
                               ABB      ABB A/B-Series meters
-                              BE       Bernecker Engineering MPM3PM meters
                               DZG      DZG Metering GmbH DVH4013 meters
+                              IEM3000  Schneider Electric iEM3000 series
                               INEPRO   Inepro Metering Pro 380
                               JANITZA  Janitza B-Series meters
+                              MPM      Bernecker Engineering MPM3PM meters
+                              ORNO1P   ORNO WE-514 & WE-515
+                              ORNO3P   ORNO WE-516 & WE-517
                               SBC      Saia Burgess Controls ALE3 meters
-                              SDM      Eastron SDM meters
+                              SDM      Eastron SDM630
+                              SDM220   Eastron SDM220
+                              SDM230   Eastron SDM230
+                              SDM72    Eastron SDM72
                             TCP
                               SUNS     Sunspec-compatible MODBUS TCP device (SMA, SolarEdge, KOSTAL, etc)
                           To use an adapter different from default, append RTU device or TCP address separated by @.
